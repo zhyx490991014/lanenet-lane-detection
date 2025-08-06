@@ -5,3 +5,6 @@ log/
 
 # python cache
 *__pycache__*
+
+.vscode/
+data/tusimple_test_image/
