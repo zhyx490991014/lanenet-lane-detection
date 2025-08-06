@@ -8,17 +8,29 @@
 """
 test LaneNet model on single image
 """
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/..')
+
+import cv2
+from lanenet_model import lanenet_postprocess
+
+from lanenet_model import lanenet
+
 import argparse
 import os.path as ops
 import time
 
-import cv2
+
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 
-from lanenet_model import lanenet
-from lanenet_model import lanenet_postprocess
+
+# # import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
+
+
 from local_utils.config_utils import parse_config_utils
 from local_utils.log_util import init_logger
 
@@ -142,14 +154,23 @@ def test_lanenet(image_path, weights_path, with_lane_fit=True):
             instance_seg_image[0][:, :, i] = minmax_scale(instance_seg_image[0][:, :, i])
         embedding_image = np.array(instance_seg_image[0], np.uint8)
 
+        #保存图像
+        save_dir = 'result'
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+
         plt.figure('mask_image')
         plt.imshow(mask_image[:, :, (2, 1, 0)])
+        plt.savefig(os.path.join(save_dir, 'mask_image_plt.png'))
         plt.figure('src_image')
         plt.imshow(image_vis[:, :, (2, 1, 0)])
+        plt.savefig(os.path.join(save_dir, 'src_image_plt.png'))
         plt.figure('instance_image')
         plt.imshow(embedding_image[:, :, (2, 1, 0)])
+        plt.savefig(os.path.join(save_dir, 'instance_image_plt.png'))
         plt.figure('binary_image')
         plt.imshow(binary_seg_image[0] * 255, cmap='gray')
+        plt.savefig(os.path.join(save_dir, 'binary_image_plt.png'))
         plt.show()
 
     sess.close()

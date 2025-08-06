@@ -8,14 +8,17 @@
 """
 LaneNet model post process
 """
+
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
+
 import os.path as ops
 import math
 
 import cv2
 import numpy as np
 import loguru
-from sklearn.cluster import DBSCAN
-from sklearn.preprocessing import StandardScaler
+
 
 LOG = loguru.logger
 
@@ -136,7 +139,6 @@ class _LaneFeat(object):
 
         self._class_id = value
 
-
 class _LaneNetCluster(object):
     """
      Instance segmentation result cluster
@@ -162,6 +164,7 @@ class _LaneNetCluster(object):
         :param embedding_image_feats:
         :return:
         """
+
         db = DBSCAN(eps=self._cfg.POSTPROCESS.DBSCAN_EPS, min_samples=self._cfg.POSTPROCESS.DBSCAN_MIN_SAMPLES)
         try:
             features = StandardScaler().fit_transform(embedding_image_feats)
