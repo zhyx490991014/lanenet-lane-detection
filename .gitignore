@@ -8,3 +8,7 @@ log/
 
 .vscode/
 data/tusimple_test_image/
+result/binary_image_plt.png
+result/instance_image_plt.png
+result/mask_image_plt.png
+result/src_image_plt.png
