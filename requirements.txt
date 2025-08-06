@@ -5,4 +5,4 @@ opencv_contrib_python
 numpy
 scikit_learn
 PyYAML
-tensorflow_gpu
+tensorflow
