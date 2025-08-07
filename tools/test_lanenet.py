@@ -173,6 +173,8 @@ def test_lanenet(image_path, weights_path, with_lane_fit=True):
         plt.savefig(os.path.join(save_dir, 'binary_image_plt.png'))
         plt.show()
 
+    saver.save(sess=sess, save_path="weights/tf2onnx/tusimple_lanenet.ckpt")
+
     sess.close()
 
     return

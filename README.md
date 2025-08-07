@@ -6,8 +6,27 @@ sudo python3 tools/test_lanenet.py --weights_path weights/BiseNetV2_LaneNet_Tusi
 sudo python3 tools/test_lanenet.py --weights_path weights/BiseNetV2_LaneNet_Tusimple_Model_Weights/tusimple_lanenet.ckpt --image_path ./data/tusimple_test_image/test.mp4_20250805_152039.211.jpg --with_lane_fit 0
 ```
 
----
+转onnx，打印输入输出：
 
+```
+Tensor("input_tensor:0", shape=(1, 256, 512, 3), dtype=float32)
+Tensor("LaneNet/bisenetv2_backend/binary_seg/ArgMax:0", shape=(1, 256, 512), dtype=int64)
+Tensor("LaneNet/bisenetv2_backend/instance_seg/pix_embedding_conv/pix_embedding_conv:0", shape=(1, 256, 512, 4), dtype=float32)
+```
+
+先在test_lanenet.py中重新保存一遍checkpoint（不然节点名称还是训练时的？）：
+
+```
+saver.save(sess=sess, save_path="weights/tf2onnx/tusimple_lanenet.ckpt")
+```
+
+然后：
+
+```
+sudo python3 -m tf2onnx.convert --checkpoint weights/tf2onnx/tusimple_lanenet.ckpt.meta --output weights/tf2onnx/model.onnx --opset 11 --inputs input_tensor:0 --outputs LaneNet/bisenetv2_backend/binary_seg/ArgMax:0,LaneNet/bisenetv2_backend/instance_seg/pix_embedding_conv/pix_embedding_conv:0
+```
+
+---
 
 # LaneNet-Lane-Detection
 

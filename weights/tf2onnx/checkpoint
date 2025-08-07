@@ -1,0 +1,2 @@
+model_checkpoint_path: "tusimple_lanenet.ckpt"
+all_model_checkpoint_paths: "tusimple_lanenet.ckpt"
